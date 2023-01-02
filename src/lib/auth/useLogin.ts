@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAddress, useSDK } from "@thirdweb-dev/react";
 import { useAuthenticateMutation } from "../../graphql/generated";
 import generateChallenge from "./generateChallenge";
-// import { setAccessToken } from "./helpers";
+import { setAccessToken } from "./helpers";
 
 export default function useLogin() {
   const address = useAddress();
@@ -26,9 +26,8 @@ export default function useLogin() {
 
     const { accessToken, refreshToken } = authenticate;
 
-    // setAccessToken(accessToken, refreshToken);
+    setAccessToken(accessToken, refreshToken);
 
-    
     client.invalidateQueries(["lens-user", address]);
   }
 
