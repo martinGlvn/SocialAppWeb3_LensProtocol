@@ -1,15 +1,38 @@
-import { ConnectWallet, useAddress } from "@thirdweb-dev/react";
-import { PublicationSortCriteria, useExplorePublicationsQuery } from "../graphql/generated";
-import useLogin from "../lib/auth/useLogin";
-
+import FeedPost from "../components/FeedPost";
+import { PublicationMainFocus, PublicationSortCriteria, useExplorePublicationsQuery } from "../graphql/generated";
+import styles from "../styles/Home.module.css";
 
 export default function Home() {
 
-  const address = useAddress();
-  const { mutate: requestLogin } = useLogin();
+  const { isLoading, error, data } = useExplorePublicationsQuery(
+    {
+      request: {
+        sortCriteria: PublicationSortCriteria.Latest,
+      },
+    },
+    {
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: false,
+    }
+  );
 
-  if(!address){
-    return (<ConnectWallet/>)
+  console.log(data);
+
+  if (error) {
+    return <div className={styles.container}>Error...</div>;
   }
-  return <button onClick={() => requestLogin()}></button>
+
+  if (isLoading) {
+    return <div className={styles.container}>Loading...</div>;
+  }
+
+  return (
+    <div className={styles.container}>
+      <div className={styles.postsContainer}>
+        {data?.explorePublications.items.map((publication) => (
+          <FeedPost publication={publication} key={publication.id} />
+        ))}
+      </div>
+    </div>
+  );
 }
