@@ -7,7 +7,7 @@ import FeedPost from "../../components/FeedPost";
 import {
   LENS_CONTRACT_ABI,
   LENS_CONTRACT_ADDRESS,
-} from "../../const/contracts";
+} from "../../const/contract";
 import { useFollow } from "../../lib/useFollow";
 
 type Props = {};
